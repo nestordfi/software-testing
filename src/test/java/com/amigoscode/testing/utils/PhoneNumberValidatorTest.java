@@ -1,11 +1,14 @@
 package com.amigoscode.testing.utils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class PhoneNumberValidatorTest {
 	
@@ -16,14 +19,18 @@ class PhoneNumberValidatorTest {
 		underTest = new PhoneNumberValidator();
 	}
 	
-	@Test
-	void isShouldValidatePhoneNumber() {
-		//Given
-		String phoneNumber = "+593960785641";
+	@ParameterizedTest
+	@CsvSource({
+		"+593960785641,TRUE",
+		"+59396078564165123266,FALSE",
+		"593960785641,FALSE",
+		})
+	void isShouldValidatePhoneNumber(String phoneNumber, String expected) {
+
 		//When
 		boolean isValid = underTest.test(phoneNumber);
 		//Then
-		assertTrue(isValid);
+		assertEquals(isValid, Boolean.valueOf(expected));
 	}
 	
 	@Test
